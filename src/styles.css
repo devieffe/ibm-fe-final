@@ -292,7 +292,7 @@ footer {
     color: #fff;
 }
 
-/* ── DoctorSearch ─────────────────────────────────────────── */
+/* ── FindDoctorSearch ─────────────────────────────────────────── */
 .doctor-search-dropdown {
     position: absolute;
     top: calc(100% + 2px);

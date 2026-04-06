@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom'
 import doctors from '../data/doctors'
 import DoctorCard from '../components/DoctorCard'
 import AppointmentForm from '../components/AppointmentForm'
-import DoctorSearch from '../components/DoctorSearch'
+import FindDoctorSearch from '../components/FindDoctorSearch'
 import Notification from '../components/Notification'
 import BookingList from '../components/BookingList'
 import { cancelAppointment } from '../store/bookingsSlice'
@@ -80,7 +80,7 @@ export default function AppointmentsPage() {
                     <>
                         <div className="row justify-content-center mb-4">
                             <div className="col-lg-6">
-                                <DoctorSearch
+                                <FindDoctorSearch
                                     onQueryChange={(q) => { setQuery(q); setBookedMsg('') }}
                                     placeholder="All specialties"
                                 />

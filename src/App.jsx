@@ -1,5 +1,8 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import AppLayout from './components/AppLayout'
+import Notification from './components/Notification'
+import { clearNotification } from './store/notificationSlice'
 import HomePage from './pages/HomePage'
 import ServicesPage from './pages/ServicesPage'
 import AppointmentsPage from './pages/AppointmentsPage'
@@ -13,9 +16,22 @@ import ConsultationsPage from './pages/ConsultationsPage'
 import ReportsPage from './pages/ReportsPage'
 import SelfCheckupPage from './pages/SelfCheckupPage'
 
+function AppNotification() {
+    const dispatch = useDispatch()
+    const { message, type } = useSelector((s) => s.notification)
+    return (
+        <Notification
+            message={message}
+            type={type}
+            onDismiss={() => dispatch(clearNotification())}
+        />
+    )
+}
+
 export default function App() {
     return (
         <BrowserRouter>
+            <AppNotification />
             <Routes>
                 <Route element={<AppLayout />}>
                     <Route path="/" element={<HomePage />} />

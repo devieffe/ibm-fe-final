@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import doctors from '../data/doctors'
-import DoctorSearch from '../components/DoctorSearch'
+import FindDoctorSearch from '../components/FindDoctorSearch'
 import DoctorCard from '../components/DoctorCard'
 import AppointmentFormIC from '../components/AppointmentFormIC'
 import Notification from '../components/Notification'
@@ -80,7 +80,7 @@ export default function ConsultationsPage() {
                     <>
                         <div className="row justify-content-center mb-3">
                             <div className="col-lg-6">
-                                <DoctorSearch
+                                <FindDoctorSearch
                                     onQueryChange={(q) => { setQuery(q); setBookedMsg('') }}
                                     placeholder="Select a specialty…"
                                 />

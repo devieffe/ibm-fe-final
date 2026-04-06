@@ -53,30 +53,40 @@ export default function Notification({
 
     return (
         <div
-            className={`alert alert-${type} d-flex align-items-center gap-2 ${dismissible ? 'alert-dismissible' : ''}`}
-            role="alert"
             style={{
+                position: 'fixed',
+                top: '1rem',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                zIndex: 9999,
+                minWidth: '320px',
+                maxWidth: '560px',
                 transition: 'opacity 0.5s ease',
                 opacity: fading ? 0 : 1,
             }}
         >
-            <i className={`bi ${iconClass} flex-shrink-0`}></i>
-            <span>{message}</span>
-            {dismissible && (
-                <button
-                    type="button"
-                    className="btn-close ms-auto"
-                    aria-label="Dismiss"
-                    onClick={() => {
-                        clearTimeout(timerRef.current)
-                        setFading(true)
-                        setTimeout(() => {
-                            setVisible(false)
-                            if (onDismiss) onDismiss()
-                        }, 500)
-                    }}
-                />
-            )}
+            <div
+                className={`alert alert-${type} d-flex align-items-center gap-2 shadow ${dismissible ? 'alert-dismissible' : ''}`}
+                role="alert"
+            >
+                <i className={`bi ${iconClass} flex-shrink-0`}></i>
+                <span>{message}</span>
+                {dismissible && (
+                    <button
+                        type="button"
+                        className="btn-close ms-auto"
+                        aria-label="Dismiss"
+                        onClick={() => {
+                            clearTimeout(timerRef.current)
+                            setFading(true)
+                            setTimeout(() => {
+                                setVisible(false)
+                                if (onDismiss) onDismiss()
+                            }, 500)
+                        }}
+                    />
+                )}
+            </div>
         </div>
     )
 }

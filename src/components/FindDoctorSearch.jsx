@@ -2,14 +2,14 @@ import { useMemo } from 'react'
 import doctors from '../data/doctors'
 
 /**
- * DoctorSearch — specialty picker that filters the doctor list.
+ * FindDoctorSearch — specialty picker that filters the doctor list.
  * Props:
  *   value          — currently selected specialty string (or '')  [select mode]
  *   onChange       — called with a doctor object when one is selected [select mode, unused here]
  *   onQueryChange  — called with the selected specialty string      [filter mode]
  *   placeholder    — select placeholder text
  */
-export default function DoctorSearch({ onQueryChange, placeholder = 'Filter by specialty…' }) {
+export default function FindDoctorSearch({ onQueryChange, placeholder = 'Filter by specialty…' }) {
     const specialties = useMemo(() => {
         const seen = new Set()
         const list = []
