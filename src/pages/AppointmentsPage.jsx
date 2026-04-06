@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import doctors from '../data/doctors'
 import DoctorCard from '../components/DoctorCard'
-import AppointmentFormIC from '../components/AppointmentFormIC'
+import AppointmentForm from '../components/AppointmentForm'
 import DoctorSearch from '../components/DoctorSearch'
 import Notification from '../components/Notification'
 import BookingList from '../components/BookingList'
@@ -174,7 +174,7 @@ export default function AppointmentsPage() {
             </div>
 
             {selectedDoctor && (
-                <AppointmentFormIC
+                <AppointmentForm
                     doctor={selectedDoctor}
                     onClose={() => setSelectedDoctor(null)}
                     onBooked={handleBooked}

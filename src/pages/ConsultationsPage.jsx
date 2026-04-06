@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom'
 import doctors from '../data/doctors'
 import DoctorSearch from '../components/DoctorSearch'
 import DoctorCard from '../components/DoctorCard'
-import ConsultationForm from '../components/ConsultationForm'
+import AppointmentFormIC from '../components/AppointmentFormIC'
 import Notification from '../components/Notification'
 import BookingList from '../components/BookingList'
 import { cancelConsultation } from '../store/bookingsSlice'
@@ -168,7 +168,7 @@ export default function ConsultationsPage() {
             </div>
 
             {activeDoctor && (
-                <ConsultationForm
+                <AppointmentFormIC
                     doctor={activeDoctor}
                     onClose={() => setActiveDoctor(null)}
                     onBooked={handleBooked}
