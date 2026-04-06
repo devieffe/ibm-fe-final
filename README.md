@@ -213,4 +213,4 @@ npm run preview
 
 ## 🔗 Repository
 
-[https://github.com/devieffe/ibm-fe-final-project](https://github.com/devieffe/ibm-fe-final-project)
+[https://github.com/devieffe/med_appt](https://github.com/devieffe/med_appt)

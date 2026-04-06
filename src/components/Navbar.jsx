@@ -1,3 +1,4 @@
+// Repository: med_appt — https://github.com/devieffe/med_appt
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../store/authSlice'

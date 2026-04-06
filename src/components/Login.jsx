@@ -1,5 +1,29 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { loginSuccess } from '../store/authSlice'
+
+// Authentication API endpoint — falls back to local user store on network error
+const LOGIN_API_URL = 'https://stayhealthy-api.dev/login'
+
+async function callLoginApi(email, password) {
+    try {
+        const response = await fetch(LOGIN_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+        })
+        const data = await response.json().catch(() => ({}))
+        if (!response.ok) {
+            return { success: false, error: data.message || 'Invalid email or password.' }
+        }
+        return { success: true, user: data.user ?? data }
+    } catch {
+        // Network unavailable — return null to trigger local fallback
+        return null
+    }
+}
 
 export default function Login({
     isAuthenticated,

@@ -6,10 +6,11 @@ import { jsPDF } from 'jspdf'
 import BookingsTable from '../components/BookingsTable'
 import Popup from '../components/Popup'
 
-function buildPdf(booking) {
+function buildPdf(booking, reviews) {
     const doc = new jsPDF()
     const isAppt = booking.type === 'appointment'
     const accentHex = isAppt ? [13, 110, 253] : [255, 154, 60]
+    const review = reviews[booking.id]
 
     // Header bar
     doc.setFillColor(...accentHex)
@@ -61,6 +62,134 @@ function buildPdf(booking) {
         y += 9
     })
 
+    // ── Prescription Details ──────────────────────────────────────────────────
+    y += 6
+    doc.setFontSize(13)
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(30, 30, 30)
+    doc.text('Prescription Details', 14, y)
+    y += 4
+    doc.setDrawColor(...accentHex)
+    doc.setLineWidth(0.5)
+    doc.line(14, y, 196, y)
+    y += 9
+
+    const specialty = (booking.specialty || '').toLowerCase()
+    const prescriptionData = specialty.includes('cardio')
+        ? {
+            diagnosis: 'Mild hypertension, routine monitoring',
+            medications: [
+                { name: 'Amlodipine 5mg', dosage: '1 tablet daily (morning)' },
+                { name: 'Aspirin 75mg', dosage: '1 tablet daily (with food)' },
+            ],
+            instructions: 'Avoid high-sodium diet. Moderate aerobic exercise recommended.',
+            followUp: '4 weeks',
+        }
+        : specialty.includes('derm')
+            ? {
+                diagnosis: 'Mild eczema / contact dermatitis',
+                medications: [
+                    { name: 'Hydrocortisone cream 1%', dosage: 'Apply to affected area twice daily' },
+                    { name: 'Cetirizine 10mg', dosage: '1 tablet at night' },
+                ],
+                instructions: 'Avoid known irritants. Moisturise twice daily with fragrance-free lotion.',
+                followUp: '3 weeks',
+            }
+            : specialty.includes('ortho')
+                ? {
+                    diagnosis: 'Mild musculoskeletal strain',
+                    medications: [
+                        { name: 'Ibuprofen 400mg', dosage: '1 tablet three times daily after meals (max 5 days)' },
+                        { name: 'Diclofenac gel 1%', dosage: 'Apply to affected area up to 3 times daily' },
+                    ],
+                    instructions: 'Rest affected area. Apply ice pack 15 min, 3× per day.',
+                    followUp: '2 weeks',
+                }
+                : {
+                    diagnosis: 'General wellness consultation',
+                    medications: [
+                        { name: 'Vitamin D3 1000 IU', dosage: '1 capsule daily (with meal)' },
+                        { name: 'Paracetamol 500mg', dosage: '1–2 tablets as needed (max 8/day)' },
+                    ],
+                    instructions: 'Maintain balanced diet, adequate hydration, and regular sleep schedule.',
+                    followUp: '6 weeks',
+                }
+
+    doc.setFontSize(11)
+
+    // Diagnosis
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(100, 100, 100)
+    doc.text('Diagnosis:', 14, y)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(30, 30, 30)
+    doc.text(prescriptionData.diagnosis, 70, y)
+    y += 9
+
+    // Medications
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(100, 100, 100)
+    doc.text('Medications:', 14, y)
+    y += 7
+    prescriptionData.medications.forEach((med, i) => {
+        doc.setFont('helvetica', 'bold')
+        doc.setTextColor(30, 30, 30)
+        doc.text(`${i + 1}. ${med.name}`, 20, y)
+        y += 6
+        doc.setFont('helvetica', 'normal')
+        doc.setTextColor(80, 80, 80)
+        doc.text(`   ${med.dosage}`, 20, y)
+        y += 7
+    })
+
+    // Instructions
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(100, 100, 100)
+    doc.text('Instructions:', 14, y)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(30, 30, 30)
+    const instructionLines = doc.splitTextToSize(prescriptionData.instructions, 120)
+    doc.text(instructionLines, 70, y)
+    y += instructionLines.length * 6 + 3
+
+    // Follow-up
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(100, 100, 100)
+    doc.text('Follow-up:', 14, y)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(30, 30, 30)
+    doc.text(`In ${prescriptionData.followUp}`, 70, y)
+    y += 12
+
+    // ── Patient Review ────────────────────────────────────────────────────────
+    if (review) {
+        doc.setFontSize(13)
+        doc.setFont('helvetica', 'bold')
+        doc.setTextColor(30, 30, 30)
+        doc.text('Patient Review', 14, y)
+        y += 4
+        doc.setDrawColor(...accentHex)
+        doc.line(14, y, 196, y)
+        y += 9
+
+        doc.setFontSize(11)
+        doc.setFont('helvetica', 'bold')
+        doc.setTextColor(100, 100, 100)
+        doc.text('Rating:', 14, y)
+        doc.setFont('helvetica', 'normal')
+        doc.setTextColor(30, 30, 30)
+        doc.text('★'.repeat(review.rating) + '☆'.repeat(5 - review.rating) + `  (${review.rating}/5)`, 70, y)
+        y += 9
+
+        doc.setFont('helvetica', 'bold')
+        doc.setTextColor(100, 100, 100)
+        doc.text('Comments:', 14, y)
+        doc.setFont('helvetica', 'normal')
+        doc.setTextColor(30, 30, 30)
+        const reviewLines = doc.splitTextToSize(review.text, 120)
+        doc.text(reviewLines, 70, y)
+    }
+
     // Footer
     doc.setFontSize(9)
     doc.setTextColor(160, 160, 160)
@@ -73,7 +202,7 @@ function buildPdf(booking) {
 export default function ReportsPage() {
     usePageTitle('My Reports', 'View and download PDF health reports for your StayHealthy appointments and consultations.')
     const { isAuthenticated } = useSelector((s) => s.auth)
-    const { appointments, consultations } = useSelector((s) => s.bookings)
+    const { appointments, consultations, reviews } = useSelector((s) => s.bookings)
     const [previewUrl, setPreviewUrl] = useState(null)
     const [previewTitle, setPreviewTitle] = useState('')
 
@@ -85,7 +214,7 @@ export default function ReportsPage() {
     ]
 
     const handleView = (booking) => {
-        const doc = buildPdf(booking)
+        const doc = buildPdf(booking, reviews)
         const blob = doc.output('blob')
         const url = URL.createObjectURL(blob)
         setPreviewTitle(`Report — Dr. ${booking.doctorName}`)
@@ -93,7 +222,7 @@ export default function ReportsPage() {
     }
 
     const handleDownload = (booking) => {
-        const doc = buildPdf(booking)
+        const doc = buildPdf(booking, reviews)
         doc.save(`report-${booking.doctorName.replace(/\s+/g, '-').toLowerCase()}-${booking.id}.pdf`)
     }
 
