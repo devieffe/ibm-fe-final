@@ -1,5 +1,8 @@
 # StayHealthy — React Web App
 
+
+<p align="center"><img src="docs/media/scr1.jpg" alt="StayHealthy screenshot" /></p>
+
 A full-featured health & wellness platform built with **React 18 + Vite**, allowing patients to book doctor appointments, start instant consultations, run guided self check-ups, read health articles, and manage their reviews and reports — all in a single-page application.
 
 ---
@@ -18,10 +21,6 @@ More advanced techniques will be implemented in future updates.
 - **IBM Front-End Developer Professional Certificate**  
   https://www.credly.com/badges/4f1eb052-2671-4381-9898-da620b9bb036  
 
-
----
-
-![StayHealthy screenshot](docs/media/scr1.jpg)
 
 ---
 
