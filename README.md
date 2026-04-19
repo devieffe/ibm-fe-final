@@ -4,7 +4,7 @@ A full-featured health & wellness platform built with **React 18 + Vite**, allow
 
 ---
 
-## 🚀 Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -161,30 +161,6 @@ Dynamic per-page titles and meta descriptions via the `usePageTitle` hook.
 
 ---
 
-## ⚙️ Getting Started
-
-### Prerequisites
-- Node.js 18+
-- npm 9+
-
-### Install & Run
-
-```bash
-npm install
-npm run dev
-```
-
-App runs at **http://localhost:5173**
-
-### Production Build
-
-```bash
-npm run build
-npm run preview
-```
-
----
-
 ## 🎨 Design System
 
 - **Primary colour**: Bootstrap blue `#0d6efd`
@@ -211,6 +187,6 @@ npm run preview
 
 ---
 
-## 🔗 Repository
+## 🔗 Deploy 
 
-[https://github.com/devieffe/ibm-fe-final-upd](https://github.com/devieffe/ibm-fe-final-upd)
+[hhttps://ibm-fe-final.netlify.app](https://ibm-fe-final.netlify.app)
