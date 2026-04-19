@@ -2,18 +2,19 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import Popup from './Popup'
 import { addReview } from '../store/bookingsSlice'
+import { showNotification } from '../store/notificationSlice'
 
 // ─── ReviewForm ───────────────────────────────────────────────────────────────
 // Stand-alone "Write a Review" button + lightbox for the public Reviews page.
 export function ReviewForm({ onReviewSubmit }) {
+    const dispatch = useDispatch()
     const [showForm, setShowForm] = useState(false)
-    const [submittedMessage, setSubmittedMessage] = useState(null)
     const [showWarning, setShowWarning] = useState(false)
     const [formData, setFormData] = useState({ name: '', review: '', rating: 0 })
 
     const closeForm = () => { setShowForm(false); setShowWarning(false) }
     const handleBackdropClick = (e) => { if (e.target === e.currentTarget) closeForm() }
-    const handleButtonClick = () => { setShowForm(true); setSubmittedMessage(null) }
+    const handleButtonClick = () => { setShowForm(true) }
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value })
     const handleRating = (value) => setFormData({ ...formData, rating: value })
     const handleReset = () => { setFormData({ name: '', review: '', rating: 0 }); setShowWarning(false) }
@@ -25,7 +26,6 @@ export function ReviewForm({ onReviewSubmit }) {
             return
         }
         setShowWarning(false)
-        setSubmittedMessage(formData)
         if (onReviewSubmit) {
             onReviewSubmit({
                 text: formData.review,
@@ -36,6 +36,7 @@ export function ReviewForm({ onReviewSubmit }) {
         }
         setFormData({ name: '', review: '', rating: 0 })
         setShowForm(false)
+        dispatch(showNotification({ message: `Thanks, ${formData.name}! Your review has been posted.`, type: 'success' }))
     }
 
     return (
@@ -109,12 +110,6 @@ export function ReviewForm({ onReviewSubmit }) {
                 </div>
             )}
 
-            {submittedMessage && (
-                <div className="alert alert-success mt-3 d-inline-flex align-items-center gap-2">
-                    <i className="bi bi-check-circle-fill fs-5"></i>
-                    <span>Thanks, <strong>{submittedMessage.name}</strong>! Your review has been posted.</span>
-                </div>
-            )}
         </div>
     )
 }
