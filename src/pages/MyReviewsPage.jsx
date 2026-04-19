@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { ReviewPopup } from '../components/GiveReviews'
+import usePageTitle from '../hooks/usePageTitle'
 
 export default function MyReviewsPage() {
     usePageTitle('My Reviews', 'Write and manage your reviews for StayHealthy doctors and wellness consultations.')
